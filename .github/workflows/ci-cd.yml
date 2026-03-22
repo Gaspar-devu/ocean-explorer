@@ -96,11 +96,20 @@ jobs:
       - name: Checkout du code
         uses: actions/checkout@v4
 
-      - name: Récupération de l'artifact front-end buildé
-        uses: actions/download-artifact@v4
+      - name: Installation de Node.js 22
+        uses: actions/setup-node@v4
         with:
-          name: frontend-dist
-          path: frontend/dist
+          node-version: "22"
+
+      - name: Installation des dépendances front-end
+        run: npm install
+        working-directory: ./frontend
+
+      - name: Build Vue.js
+        run: npm run build
+        working-directory: ./frontend
+        env:
+          VITE_API_URL: ${{ secrets.VITE_API_URL }}
 
       - name: Déploiement sur Azure Static Web Apps
         uses: Azure/static-web-apps-deploy@v1
