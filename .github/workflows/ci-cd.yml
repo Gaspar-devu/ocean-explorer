@@ -96,26 +96,11 @@ jobs:
       - name: Checkout du code
         uses: actions/checkout@v4
 
-      - name: Installation de Node.js 22
-        uses: actions/setup-node@v4
-        with:
-          node-version: "22"
-
-      - name: Installation des dépendances front-end
-        run: npm install
-        working-directory: ./frontend
-
-      - name: Build Vue.js
-        run: npm run build
-        working-directory: ./frontend
-        env:
-          VITE_API_URL: ${{ secrets.VITE_API_URL }}
-
       - name: Déploiement sur Azure Static Web Apps
         uses: Azure/static-web-apps-deploy@v1
         with:
           azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN }}
           action: upload
           app_location: "./frontend"
+          api_location: ""
           output_location: "dist"
-          skip_app_build: true
